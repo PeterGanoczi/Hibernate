@@ -11,9 +11,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="manager_id")
-    private Manager managerId;
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Manager manager;
 
     @Column(name="first_name")
     private String firstName;
@@ -25,9 +25,7 @@ public class Employee {
 
     }
 
-    public Employee(int id, Manager managerId, String firstName, String lastName) {
-        this.id = id;
-        this.managerId = managerId;
+    public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -40,12 +38,12 @@ public class Employee {
         this.id = id;
     }
 
-    public Manager getManagerId() {
-        return managerId;
+    public Manager getManager() {
+        return manager;
     }
 
-    public void setManagerId(Manager managerId) {
-        this.managerId = managerId;
+    public void setManager(Manager managerId) {
+        this.manager = managerId;
     }
 
     public String getFirstName() {
@@ -68,7 +66,7 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "id=" + id +
-                ", managerId=" + managerId +
+                ", manager=" + manager +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';

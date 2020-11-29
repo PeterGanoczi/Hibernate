@@ -2,6 +2,7 @@ package sk.itsovy.ganoczi.hibernate.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,14 +23,14 @@ public class Manager {
     @Column(name="shop_name")
     private String shopName;
 
-    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,CascadeType.REFRESH})
-    private List<Employee> employee;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,CascadeType.REFRESH})
+    private List<Employee> employees;
 
     public Manager(){
 
     }
-    public Manager(int id, String firstName, String lastName, String shopName) {
-        this.id = id;
+    public Manager(String firstName, String lastName, String shopName) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.shopName = shopName;
@@ -65,6 +66,24 @@ public class Manager {
 
     public void setShopName(String shopName) {
         this.shopName = shopName;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+
+    }
+
+    public void add(Employee employee){
+        if(employees==null) {
+            employees=new ArrayList<>();
+        }
+
+        employees.add(employee);
+        employee.setManager(this);
     }
 
     @Override
